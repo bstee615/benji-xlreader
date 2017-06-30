@@ -1,17 +1,19 @@
 import openpyxl
 
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QFileDialog
+
 # Usage instructions for dumbos - usually not needed
-print('Welcome to xlreader, created by Benjamin Steenhoek.')
-print('If you have used this utility before, please note that any generated')
-print('workbooks should be CLOSED before running this program to prevent errors.\n')
-wbname = input('Please input workbook name, then press enter. ')
+#print('Welcome to xlreader, created by Benjamin Steenhoek.')
+#print('If you have used this utility before, please note that any generated')
+#print('workbooks should be CLOSED before running this program to prevent errors.\n')
+#wbname = input('Please input workbook name, then press enter. ')
 
 # Start program
-try:
-    wb = openpyxl.load_workbook(wbname)
-except FileNotFoundError:
-    print('File "' + wbname + '" was not found. Check your spelling and capitalization and try again.')
-    input('Press "Enter" to close the program.')
+#try:
+wb = openpyxl.load_workbook(wbname)
+#except FileNotFoundError:
+#    print('File "' + wbname + '" was not found. Check your spelling and capitalization and try again.')
+#    input('Press "Enter" to close the program.')
 
 asins = {}
 
@@ -63,3 +65,38 @@ try:
 except PermissionError:
     print('Please close ' + newwbname + ', then try again.')
 input('Workbook saved in xlreader folder to name ' + newwbname + '. Press "Enter" to close.')
+
+# GUI
+class LoginWidget(QWidget):
+
+    StartTime = None
+    EndTime = None
+
+    Username = ""
+    Liquidations = 0
+
+    def __init__(self):
+        super().__init__()
+
+        self.initialize_gui()
+        self.connect_login_db()
+
+    def initialize_gui(self):
+        """
+        Initialize the window.
+        """
+        self.setWindowTitle('Roney Industries Employee Login')
+        self.setWindowIcon(QIcon("not_connected.png"))
+
+        # Username/Password Input
+        Label = QLabel(self)
+        Label.setText("Enter username:")
+
+        self.XLInput = QLineEdit(self)
+        self.SubmitXL = QLineEdit(self)
+
+        self.fileName = QFileDialog.getOpenFileName(self,"Open Excel", "C:")
+
+    def openXL(self):
+        xlname = self.XLInput.text
+
